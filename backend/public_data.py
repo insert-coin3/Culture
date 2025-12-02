@@ -1,0 +1,27 @@
+import os
+import requests
+import xml.etree.ElementTree as ET
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv("CULTURE_API_KEY")
+API_URL = "https://apis.data.go.kr/B553457/cultureinfo/period2"
+
+def fetch_public_data(from_date="20250101", to_date="20251231", rows=5):
+    params = {
+        "serviceKey": API_KEY,
+        "from": from_date,
+        "to": to_date,
+        "cPage": 1,
+        "rows": rows,
+    }
+    response = requests.get(API_URL, params=params)
+    response.raise_for_status()
+    root = ET.fromstring(response.content)
+    items = root.findall(".//item")
+    texts = []
+    for item in items:
+        title = item.findtext("title")
+        if title:
+            texts.append(title)
+    return texts
