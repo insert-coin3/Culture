@@ -6,11 +6,11 @@ vector_store = build_vector_store()
 retriever = vector_store.as_retriever() if vector_store else None
 
 def answer_question(question: str):
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     if not retriever:
         return llm.invoke(question).content
 
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
