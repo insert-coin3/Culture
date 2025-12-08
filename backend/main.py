@@ -20,9 +20,9 @@ def root():
     return {"message": "Culture AI Project is running."}
 
 @app.get("/ask")
-def ask(q: str):
+async def ask(q: str):
     try:
-        answer = answer_question(q)
+        answer = await answer_question(q)
         return {"question": q, "answer": answer}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

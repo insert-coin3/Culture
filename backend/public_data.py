@@ -3,7 +3,10 @@ import requests
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 
-load_dotenv()
+import pathlib
+
+env_path = pathlib.Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
 API_KEY = os.getenv("CULTURE_API_KEY")
 API_URL = "https://apis.data.go.kr/B553457/cultureinfo/period2"
 
@@ -15,7 +18,9 @@ def fetch_public_data(from_date="20250101", to_date="20251231", rows=5):
         "cPage": 1,
         "rows": rows,
     }
-    response = requests.get(API_URL, params=params)
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    response = requests.get(API_URL, params=params, verify=False)
     response.raise_for_status()
     root = ET.fromstring(response.content)
     items = root.findall(".//item")
