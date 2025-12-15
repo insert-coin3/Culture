@@ -10,7 +10,7 @@ load_dotenv(dotenv_path=env_path)
 API_KEY = os.getenv("CULTURE_API_KEY")
 API_URL = "https://apis.data.go.kr/B553457/cultureinfo/period2"
 
-def fetch_public_data(from_date="20250101", to_date="20251231", rows=5):
+def fetch_public_data(from_date="20250101", to_date="20251231", rows=20):
     params = {
         "serviceKey": API_KEY,
         "from": from_date,
@@ -27,6 +27,15 @@ def fetch_public_data(from_date="20250101", to_date="20251231", rows=5):
     texts = []
     for item in items:
         title = item.findtext("title")
+        place = item.findtext("place")
+        start_date = item.findtext("startDate")
+        end_date = item.findtext("endDate")
+        
         if title:
-            texts.append(title)
+            info = f"행사명: {title}"
+            if place:
+                info += f", 장소: {place}"
+            if start_date and end_date:
+                info += f", 기간: {start_date}~{end_date}"
+            texts.append(info)
     return texts
