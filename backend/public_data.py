@@ -28,14 +28,4 @@ def fetch_public_data(from_date="20250101", to_date="20251231", rows=20):
     for item in items:
         title = item.findtext("title")
         place = item.findtext("place")
-        start_date = item.findtext("startDate")
-        end_date = item.findtext("endDate")
-        
-        if title:
-            info = f"행사명: {title}"
-            if place:
-                info += f", 장소: {place}"
-            if start_date and end_date:
-                info += f", 기간: {start_date}~{end_date}"
-            texts.append(info)
-    return texts
+        start_date = item.f
