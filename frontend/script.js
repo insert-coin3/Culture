@@ -25,7 +25,14 @@ chatForm.addEventListener('submit', async (e) => {
 
         // Remove loading and add AI response
         removeLoading(loadingId);
-        addMessage(data.answer, 'ai');
+
+        let answerText = data.answer;
+        if (typeof answerText === 'object') {
+            console.warn('Received object as answer:', answerText);
+            answerText = JSON.stringify(answerText, null, 2);
+        }
+
+        addMessage(answerText, 'ai');
     } catch (error) {
         console.error('Error:', error);
         removeLoading(loadingId);
